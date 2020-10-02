@@ -104,7 +104,7 @@ class FunnelLinePathView(ctx : Context) : View(ctx) {
             }
         }
 
-        fun startUpdating(cb : (Float) -> Unit) {
+        fun startUpdating(cb : () -> Unit) {
             if (dir == 0f) {
                 dir = 1f - 2 * prevScale
                 cb()
