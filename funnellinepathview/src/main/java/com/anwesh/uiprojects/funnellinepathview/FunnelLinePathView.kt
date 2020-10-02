@@ -138,4 +138,45 @@ class FunnelLinePathView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class FLPNode(var i : Int, val state : State = State()) {
+
+        private var next : FLPNode? = null
+        private var prev : FLPNode? = null
+
+        init {
+
+        }
+
+        fun addNeighbor() {
+            if (i < colors.size - 1) {
+                next = FLPNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawFLPNode(i, state.scale, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            state.update(cb)
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : FLPNode {
+            var curr : FLPNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+    }
 }
