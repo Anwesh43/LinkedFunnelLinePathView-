@@ -21,8 +21,8 @@ val colors : Array<Int> = arrayOf(
         "#FFC107",
         "#009688"
 ).map({Color.parseColor(it)}).toTypedArray()
-val parts : Int = 4
-val scGap : Float = 0.02f
+val parts : Int = 5
+val scGap : Float = 0.02f / parts
 val strokeFactor : Float = 90f
 val hFactor : Float = 3f
 val wFactor : Float = 5.4f
@@ -37,10 +37,10 @@ fun Float.to(end : Float, scale : Float) : Float = this + (end - this) * scale
 
 fun Canvas.drawFunnelLinePath(scale : Float, w : Float, h : Float, paint : Paint) {
     val sf : Float = scale.sinify()
-    val sf1 : Float = scale.divideScale(0, parts)
-    val sf2 : Float = scale.divideScale(1, parts)
-    val sf3 : Float = scale.divideScale(2, parts)
-    val sf4 : Float = scale.divideScale(3, parts)
+    val sf1 : Float = sf.divideScale(0, parts)
+    val sf2 : Float = sf.divideScale(1, parts)
+    val sf3 : Float = sf.divideScale(2, parts)
+    val sf4 : Float = sf.divideScale(3, parts)
     val x : Float = w / wFactor
     val y : Float = h / hFactor
     val xGap : Float = w / 2 - x
@@ -50,9 +50,9 @@ fun Canvas.drawFunnelLinePath(scale : Float, w : Float, h : Float, paint : Paint
     for (j in 0..1) {
         save()
         scale(1f - 2 * j, 1f)
-        drawLine(-w / 2, h / 2, - w / 2 + xGap * sf1, h / 2 - y * sf2, paint)
+        drawLine(-w / 2, h / 2, - w / 2 + xGap * sf1, h / 2 - y * sf1, paint)
         drawLine(-w / 2 + xGap, h / 2 - y, - w/ 2 + xGap, (h / 2 - y).to(-(h / 2 - y), sf2), paint)
-        drawLine(-w / 2 + xGap, (-h / 2 + y), -w / 2 + xGap + xGap * sf3, (-h / 2 + y).to(-h / 2, sf3), paint)
+        drawLine(-w / 2 + xGap, (-h / 2 + y), -w / 2 + xGap - xGap * sf3, (-h / 2 + y).to(-h / 2, sf3), paint)
         val path : Path = Path()
         path.moveTo(0f, h / 2)
         path.lineTo(- w / 2, h / 2)
