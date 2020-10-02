@@ -202,4 +202,27 @@ class FunnelLinePathView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : FunnelLinePathView) {
+
+        private val animator : Animator = Animator(view)
+        private val flp : FunnelLinePath = FunnelLinePath(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            flp.draw(canvas, paint)
+            animator.animate {
+                flp.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            flp.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
